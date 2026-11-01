@@ -75,6 +75,60 @@ def process_jdx(
             output_dir / "wavenumbers.npy"
         )
 
+        # Проверяем, что измеряется по оси Y
+        jdx_text = input_path.read_text(
+            encoding="utf-8",
+            errors="replace"
+        )
+
+        is_transmittance = any(
+            line.strip().upper() == "##YUNITS=TRANSMITTANCE"
+            for line in jdx_text.splitlines()
+        )
+
+        # # Эксперимент: меняем направление полос
+        # if is_transmittance:
+        #     intensities = 1.0 - intensities
+        #     print("Transmittance spectrum: signal inverted")
+
+        if is_transmittance:
+            sys.path.insert(0, str(ultrair_root))
+            from data.common.jcamp import parse_jcamp
+
+            axis, transmittance = parse_jcamp(input_path)
+
+            if np.any(transmittance <= 0) or np.any(transmittance > 1):
+                raise ValueError("Expected transmittance in (0, 1]")
+
+            absorbance = -np.log10(transmittance)
+
+            mask = (
+                (axis >= 400) &
+                (axis <= 4000)
+            )
+
+            if np.count_nonzero(mask) < 2:
+                raise ValueError("Not enough spectrum points")
+
+            values = np.interp(
+                wavenumbers,
+                axis[mask],
+                absorbance[mask]
+            )
+
+            minimum = values.min()
+            maximum = values.max()
+
+            if maximum <= minimum:
+                raise ValueError("Cannot normalize spectrum")
+
+            intensities = (
+                (values - minimum) / (maximum - minimum)
+            ).astype(np.float32)[np.newaxis, :]
+
+            print("Transmittance converted to absorbance")
+
+
     # Ожидаем ровно один спектр
     if intensities.shape != (1, 3600):
         raise ValueError(

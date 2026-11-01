@@ -10,6 +10,64 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
 
+def plot_spectrum(
+    intensities: np.ndarray,
+    wavenumbers: np.ndarray,
+    output_path: str | Path,
+    title: str = "IR Spectrum"
+) -> None:
+    """Build and save an infrared spectrum plot."""
+
+    intensities = np.asarray(intensities)
+    wavenumbers = np.asarray(wavenumbers)
+
+    if intensities.ndim != 1:
+        raise ValueError("Intensities must be a 1D array")
+
+    if wavenumbers.ndim != 1:
+        raise ValueError("Wavenumbers must be a 1D array")
+
+    if len(intensities) != len(wavenumbers):
+        raise ValueError(
+            "Spectrum and wavenumber axis lengths differ"
+        )
+
+    if not (
+        np.isfinite(intensities).all()
+        and np.isfinite(wavenumbers).all()
+    ):
+        raise ValueError("Spectrum contains NaN or Inf")
+
+    output_path = Path(output_path)
+    output_path.parent.mkdir(
+        parents=True,
+        exist_ok=True
+    )
+
+    fig, ax = plt.subplots(figsize=(12, 5))
+
+    ax.plot(
+        wavenumbers,
+        intensities,
+        color="royalblue",
+        linewidth=1.5
+    )
+
+    ax.invert_xaxis()
+
+    ax.set_xlabel("Wavenumber (cm⁻¹)")
+    ax.set_ylabel("Normalized signal")
+    ax.set_title(title)
+
+    ax.grid(alpha=0.3)
+    fig.tight_layout()
+
+    try:
+        fig.savefig(output_path, dpi=150)
+    finally:
+        plt.close(fig)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Plot an infrared spectrum"
@@ -23,10 +81,8 @@ def main():
 
     args = parser.parse_args()
 
-    # Загружаем спектральные данные
     spectra = np.load(args.input)
 
-    # Поддерживаем один спектр [L] и набор спектров [N, L]
     if spectra.ndim == 1:
         spectra = spectra[np.newaxis, :]
 
@@ -40,7 +96,6 @@ def main():
 
     spectrum = spectra[args.index]
 
-    # Загружаем физическую шкалу, если она предоставлена
     if args.wavenumbers:
         wavenumbers = np.load(args.wavenumbers)
     else:
@@ -48,41 +103,17 @@ def main():
             400, 4000, len(spectrum)
         )
 
-    if wavenumbers.ndim != 1:
-        raise ValueError("Wavenumber axis must be 1D")
-
-    if len(wavenumbers) != len(spectrum):
-        raise ValueError(
-            "Spectrum and wavenumber axis lengths differ"
-        )
-
-    # Создаём папку результатов
-    output_dir = Path(args.output_dir)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    output_path = output_dir / f"{args.name}_spectrum.png"
-
-    # Строим график
-    plt.figure(figsize=(12, 5))
-
-    plt.plot(
-        wavenumbers,
-        spectrum,
-        color="royalblue",
-        linewidth=1.5
+    output_path = (
+        Path(args.output_dir)
+        / f"{args.name}_spectrum.png"
     )
 
-    plt.gca().invert_xaxis()
-
-    plt.xlabel("Wavenumber (cm⁻¹)")
-    plt.ylabel("Normalized signal")
-    plt.title(f"IR Spectrum — {args.name}")
-
-    plt.grid(alpha=0.3)
-    plt.tight_layout()
-
-    plt.savefig(output_path, dpi=150)
-    plt.close()
+    plot_spectrum(
+        intensities=spectrum,
+        wavenumbers=wavenumbers,
+        output_path=output_path,
+        title=f"IR Spectrum — {args.name}"
+    )
 
     print(f"Saved: {output_path}")
 

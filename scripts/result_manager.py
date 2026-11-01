@@ -5,11 +5,7 @@ import tempfile
 
 from pathlib import Path
 
-import matplotlib
-
-matplotlib.use("Agg")
-
-import matplotlib.pyplot as plt
+from scripts.plot_spectrum import plot_spectrum
 
 from scripts.spectrum_processor import Spectrum
 
@@ -40,34 +36,7 @@ class ResultManager:
 
         return max(numbers, default=0) + 1
 
-    def _save_plot(
-        self,
-        spectrum: Spectrum,
-        output_path: Path
-    ) -> None:
-
-        intensities = spectrum.intensities[0]
-        wavenumbers = spectrum.wavenumbers
-
-        plt.figure(figsize=(12, 5))
-
-        plt.plot(
-            wavenumbers,
-            intensities,
-            color="royalblue"
-        )
-
-        plt.gca().invert_xaxis()
-
-        plt.xlabel("Wavenumber (cm⁻¹)")
-        plt.ylabel("Normalized signal")
-        plt.title("IR Spectrum")
-
-        plt.grid(alpha=0.3)
-        plt.tight_layout()
-
-        plt.savefig(output_path, dpi=150)
-        plt.close()
+    
 
     def save(
         self,
@@ -99,9 +68,10 @@ class ResultManager:
                 )
 
             # Сохраняем график
-            self._save_plot(
-                spectrum,
-                temp_path / "spectrum.png"
+            plot_spectrum(
+                intensities=spectrum.intensities[0],
+                wavenumbers=spectrum.wavenumbers,
+                output_path=temp_path / "spectrum.png"
             )
 
             # Выбираем следующий номер
