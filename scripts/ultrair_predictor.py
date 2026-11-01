@@ -15,7 +15,7 @@ class UltraIRPredictor:
 
     def __init__(
         self,
-        ultrair_root: str | Path = "/app/UltraIR"
+        ultrair_root: str | Path = Path(__file__).resolve().parents[2] / "UltraIR"
     ):
         self.ultrair_root = Path(ultrair_root).resolve()
 

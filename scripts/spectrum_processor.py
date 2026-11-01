@@ -17,7 +17,7 @@ class Spectrum:
 
 def process_jdx(
     input_path: str | Path,
-    ultrair_root: str | Path = "/app/UltraIR"
+    ultrair_root: str | Path = Path(__file__).resolve().parents[2] / "UltraIR"
 ) -> Spectrum:
 
     input_path = Path(input_path).resolve()
