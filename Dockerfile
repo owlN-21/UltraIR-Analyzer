@@ -1,8 +1,11 @@
-
 FROM python:3.11-slim
 
-WORKDIR /app
+WORKDIR /app/UltraIR
 
-RUN python --version
+COPY --from=ultrair-source . .
 
-CMD ["python", "--version"]
+RUN python -m pip install --no-cache-dir -e .
+
+RUN python -m pip install --no-cache-dir matplotlib
+
+CMD ["python", "-m", "scripts.predict", "--help"]
