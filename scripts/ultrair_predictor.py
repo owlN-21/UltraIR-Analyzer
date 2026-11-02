@@ -15,7 +15,11 @@ class UltraIRPredictor:
 
     def __init__(
         self,
-        ultrair_root: str | Path = Path(__file__).resolve().parents[2] / "UltraIR"
+        ultrair_root: str | Path = (
+            Path(sys._MEIPASS) / "UltraIR"
+            if getattr(sys, "frozen", False)
+            else Path(__file__).resolve().parents[2] / "UltraIR"
+        )
     ):
         self.ultrair_root = Path(ultrair_root).resolve()
 
@@ -59,7 +63,7 @@ class UltraIRPredictor:
 
             command = [
                 sys.executable,
-                "-m",
+                "--internal-module" if getattr(sys, "frozen", False) else "-m",
                 "scripts.predict",
                 "--config", self.config,
                 "--ckpt", self.checkpoint,

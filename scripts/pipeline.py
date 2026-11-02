@@ -1,4 +1,5 @@
-
+import os
+import sys
 import argparse
 from pathlib import Path
 
@@ -23,7 +24,16 @@ def analyze_jdx(input_path: str | Path) -> Path:
     # 3. Сохранение результатов
     print("[3/3] Saving results...")
 
-    manager = ResultManager("results")
+    if getattr(sys, "frozen", False):
+        output_root = (
+            Path(os.environ.get("LOCALAPPDATA", Path.home()))
+            / "UltraIR Analyzer"
+            / "results"
+        )
+    else:
+        output_root = Path("results")
+
+    manager = ResultManager(output_root)
 
     result_dir = manager.save(
         spectrum=spectrum,

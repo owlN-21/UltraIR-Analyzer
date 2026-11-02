@@ -20,3 +20,7 @@ venv/
 
 # Generated spectral data
 spectra/processed/
+
+# PyInstaller
+dist/
+build/
