@@ -3,6 +3,8 @@ from pathlib import Path
 from PySide6.QtGui import QPixmap
 
 import json
+import os
+import re
 
 from PySide6.QtCore import Qt, QThread
 from PySide6.QtWidgets import (
@@ -15,9 +17,13 @@ from PySide6.QtWidgets import (
     QWidget,
     QScrollArea,
     QHBoxLayout,
+    QTextEdit,
+    QLineEdit,
 )
 
 from interface.analysis_worker import AnalysisWorker
+
+from interface.interpretation_worker import InterpretationWorker
 
 
 class MainWindow(QMainWindow):
@@ -32,18 +38,21 @@ class MainWindow(QMainWindow):
         self.thread = None
         self.worker = None
 
+        self.interpretation_thread = None
+        self.interpretation_worker = None
+
         # Главный контейнер
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
 
         main_layout = QHBoxLayout(central_widget)
         main_layout.setContentsMargins(20, 20, 20, 20)
-        main_layout.setSpacing(20)
+        main_layout.setSpacing(5)
 
         # ЛЕВАЯ ПАНЕЛЬ
         left_panel = QWidget()
         left_layout = QVBoxLayout(left_panel)
-        left_layout.setSpacing(15)
+        left_layout.setSpacing(8)
 
         title = QLabel("UltraIR Analyzer")
         title.setStyleSheet(
@@ -65,6 +74,19 @@ class MainWindow(QMainWindow):
         self.status_label = QLabel("Ожидание файла")
         self.status_label.setWordWrap(True)
 
+        # Необязательный API-ключ Groq
+        self.api_key_label = QLabel("Groq API Key (необязательно)")
+
+        self.api_key_input = QLineEdit()
+        self.api_key_input.setPlaceholderText(
+            "Введите API-ключ для научной интерпретации"
+        )
+
+        # Скрываем введённые символы
+        self.api_key_input.setEchoMode(
+            QLineEdit.EchoMode.Password
+        )
+
         # Будущий блок предсказаний
         predictions_title = QLabel("Результаты UltraIR")
         predictions_title.setStyleSheet(
@@ -76,14 +98,19 @@ class MainWindow(QMainWindow):
             "функциональные группы"
         )
         self.predictions_label.setAlignment(
-            Qt.AlignmentFlag.AlignCenter
+            Qt.AlignmentFlag.AlignLeft |
+            Qt.AlignmentFlag.AlignTop
         )
+
+        self.predictions_label.setFixedHeight(120)
         self.predictions_label.setWordWrap(True)
         self.predictions_label.setStyleSheet(
             "background-color: #ffffff;"
             "border: 1px solid #dddddd;"
             "border-radius: 8px;"
-            "padding: 20px;"
+            "padding: 15px;"
+            "font-size: 16px;"
+            "line-height: 1.5;"
         )
 
         left_layout.addWidget(title)
@@ -91,9 +118,38 @@ class MainWindow(QMainWindow):
         left_layout.addWidget(self.file_label)
         left_layout.addWidget(self.analyze_button)
         left_layout.addWidget(self.status_label)
+        left_layout.addWidget(self.api_key_label)
+        left_layout.addWidget(self.api_key_input)
         left_layout.addSpacing(20)
         left_layout.addWidget(predictions_title)
-        left_layout.addWidget(self.predictions_label, stretch=1)
+        left_layout.addWidget(self.predictions_label)
+
+        # Научная интерпретация RAG + LLM
+        self.interpretation_title = QLabel("Научная интерпретация")
+        self.interpretation_title.setStyleSheet(
+            "font-size: 18px; font-weight: bold;"
+        )
+
+        self.interpretation_text = QTextEdit()
+        self.interpretation_text.setReadOnly(True)
+        self.interpretation_text.setMinimumHeight(180)
+
+        self.interpretation_text.setStyleSheet(
+            "QTextEdit {"
+            "background-color: #ffffff;"
+            "border: 1px solid #dddddd;"
+            "border-radius: 8px;"
+            "padding: 12px;"
+            "font-size: 15px;"
+            "}"
+        )
+
+        # Изначально блок скрыт
+        self.interpretation_title.hide()
+        self.interpretation_text.hide()
+
+        left_layout.addWidget(self.interpretation_title)
+        left_layout.addWidget(self.interpretation_text, stretch=1)
 
         # ПРАВАЯ ПАНЕЛЬ
         right_panel = QWidget()
@@ -181,6 +237,7 @@ class MainWindow(QMainWindow):
 
         self.display_spectrum()
         self.display_predictions()
+        self.start_interpretation()
 
     def analysis_error(self, error_message: str):
         self.status_label.setText("Ошибка анализа")
@@ -201,7 +258,13 @@ class MainWindow(QMainWindow):
         )
 
     def closeEvent(self, event):
-        if self.thread is not None and self.thread.isRunning():
+        if (
+            (self.thread is not None and self.thread.isRunning())
+            or (
+                self.interpretation_thread is not None
+                and self.interpretation_thread.isRunning()
+            )
+        ):
             QMessageBox.information(
                 self,
                 "Анализ выполняется",
@@ -274,3 +337,76 @@ class MainWindow(QMainWindow):
         self.predictions_label.setText(
             "\n".join(lines)
         )
+
+    def start_interpretation(self):
+        if self.result_dir is None:
+            return
+
+        # Получаем API-ключ из интерфейса
+        api_key = self.api_key_input.text().strip()
+
+        # Если пользователь ввёл ключ, передаём его Groq
+        if api_key:
+            os.environ["GROQ_API_KEY"] = api_key
+
+        if self.interpretation_thread is not None:
+            return
+
+        prediction_path = self.result_dir / "prediction.json"
+
+        if not prediction_path.is_file():
+            return
+
+        self.interpretation_thread = QThread()
+
+        self.interpretation_worker = InterpretationWorker(
+            str(prediction_path)
+        )
+
+        self.interpretation_worker.moveToThread(
+            self.interpretation_thread
+        )
+
+        self.interpretation_thread.started.connect(
+            self.interpretation_worker.run
+        )
+
+        self.interpretation_worker.finished.connect(
+            self.interpretation_finished
+        )
+
+        self.interpretation_worker.finished.connect(
+            self.interpretation_thread.quit
+        )
+
+        self.interpretation_thread.finished.connect(
+            self.interpretation_worker.deleteLater
+        )
+
+        self.interpretation_thread.finished.connect(
+            self.interpretation_thread.deleteLater
+        )
+
+        self.interpretation_thread.finished.connect(
+            self.interpretation_cleanup
+        )
+
+        self.interpretation_thread.start()
+
+    def interpretation_finished(self, explanation):
+        if explanation:
+            # Отделяем заголовки от основного текста
+            formatted_text = re.sub(
+                r"(\*\*(?:Интерпретация|Неоднозначности|Вывод)\*\*)\s*",
+                r"\1\n\n",
+                explanation
+            )
+
+            self.interpretation_text.setMarkdown(formatted_text)
+
+            self.interpretation_title.show()
+            self.interpretation_text.show()
+
+    def interpretation_cleanup(self):
+        self.interpretation_thread = None
+        self.interpretation_worker = None
