@@ -1,0 +1,511 @@
+{
+  "functional_groups": [
+    {
+      "class_name": "Alkane",
+      "description": "Насыщенные углеводородные фрагменты с одинарными связями C-C и C-H.",
+      "bands": [
+        {
+          "bond": "C-H (sp3)",
+          "min": 2850,
+          "max": 3000,
+          "vibration": "stretching",
+          "intensity": "medium",
+          "shape": "multiple"
+        },
+        {
+          "bond": "C-H (CH2/CH3)",
+          "min": 1350,
+          "max": 1470,
+          "vibration": "bending",
+          "intensity": "medium",
+          "shape": "variable"
+        }
+      ],
+      "interpretation": "Сочетание валентных и деформационных колебаний C-H согласуется с наличием насыщенных углеводородных фрагментов.",
+      "limitations": [
+        "Связи C-H широко распространены в органических соединениях.",
+        "Эти полосы не позволяют самостоятельно установить принадлежность вещества к алканам."
+      ]
+    },
+    {
+      "class_name": "Methyl",
+      "description": "Метильная группа -CH3.",
+      "bands": [
+        {
+          "bond": "C-H (CH3)",
+          "min": 2850,
+          "max": 3000,
+          "vibration": "stretching",
+          "intensity": "medium",
+          "shape": "multiple"
+        },
+        {
+          "bond": "C-H (CH3)",
+          "min": 1440,
+          "max": 1470,
+          "vibration": "asymmetric bending",
+          "intensity": "medium",
+          "shape": "variable"
+        },
+        {
+          "bond": "C-H (CH3)",
+          "min": 1360,
+          "max": 1400,
+          "vibration": "symmetric bending",
+          "intensity": "medium",
+          "shape": "variable"
+        }
+      ],
+      "interpretation": "Метильную группу оценивают по совокупности валентных и деформационных колебаний C-H.",
+      "limitations": [
+        "Полосы CH3 и CH2 могут перекрываться.",
+        "Отдельная полоса не подтверждает наличие метильной группы однозначно."
+      ]
+    },
+    {
+      "class_name": "Alkene",
+      "description": "Соединения, содержащие двойную связь C=C.",
+      "bands": [
+        {
+          "bond": "C=C",
+          "min": 1620,
+          "max": 1680,
+          "vibration": "stretching",
+          "intensity": "weak_to_medium",
+          "shape": "variable"
+        },
+        {
+          "bond": "=C-H",
+          "min": 3010,
+          "max": 3100,
+          "vibration": "stretching",
+          "intensity": "medium",
+          "shape": "variable"
+        },
+        {
+          "bond": "=C-H",
+          "min": 650,
+          "max": 1000,
+          "vibration": "out-of-plane bending",
+          "intensity": "variable",
+          "shape": "variable"
+        }
+      ],
+      "interpretation": "Присутствие алкеновой группы поддерживается сочетанием колебаний C=C и характерных колебаний =C-H.",
+      "limitations": [
+        "Интенсивность C=C зависит от симметрии и степени замещения.",
+        "Для полностью замещённых алкенов колебания =C-H отсутствуют."
+      ]
+    },
+    {
+      "class_name": "Alkyne",
+      "description": "Соединения, содержащие тройную связь C≡C.",
+      "bands": [
+        {
+          "bond": "C≡C",
+          "min": 2100,
+          "max": 2260,
+          "vibration": "stretching",
+          "intensity": "weak_to_medium",
+          "shape": "variable"
+        },
+        {
+          "bond": "≡C-H",
+          "min": 3260,
+          "max": 3330,
+          "vibration": "stretching",
+          "intensity": "medium_to_strong",
+          "shape": "sharp"
+        }
+      ],
+      "interpretation": "Полоса C≡C указывает на возможное присутствие алкиновой группы. Полоса ≡C-H дополнительно характерна для терминальных алкинов.",
+      "limitations": [
+        "Внутренние алкины не имеют связи ≡C-H.",
+        "Симметричные алкины могут давать очень слабую или отсутствующую полосу C≡C."
+      ]
+    },
+    {
+      "class_name": "Alcohols",
+      "description": "Соединения, содержащие спиртовую гидроксильную группу O-H.",
+      "bands": [
+        {
+          "bond": "O-H",
+          "min": 3200,
+          "max": 3550,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "broad"
+        },
+        {
+          "bond": "O-H (free)",
+          "min": 3580,
+          "max": 3700,
+          "vibration": "stretching",
+          "intensity": "variable",
+          "shape": "sharp"
+        },
+        {
+          "bond": "C-O",
+          "min": 970,
+          "max": 1250,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "variable"
+        }
+      ],
+      "interpretation": "Для спиртов характерны колебания O-H и C-O. Водородные связи обычно приводят к уширению полосы O-H.",
+      "limitations": [
+        "Колебания O-H встречаются также у карбоновых кислот, фенолов и воды.",
+        "Наличие широкой полосы O-H само по себе не доказывает присутствие спиртовой группы."
+      ]
+    },
+    {
+      "class_name": "Amines",
+      "description": "Органические соединения, содержащие аминную группу.",
+      "bands": [
+        {
+          "bond": "N-H",
+          "min": 3300,
+          "max": 3500,
+          "vibration": "stretching",
+          "intensity": "medium",
+          "shape": "relatively_sharp"
+        },
+        {
+          "bond": "N-H",
+          "min": 1550,
+          "max": 1650,
+          "vibration": "bending",
+          "intensity": "medium",
+          "shape": "variable"
+        },
+        {
+          "bond": "C-N",
+          "min": 1000,
+          "max": 1250,
+          "vibration": "stretching",
+          "intensity": "medium",
+          "shape": "variable"
+        }
+      ],
+      "interpretation": "Первичные амины часто имеют две полосы валентных колебаний N-H, вторичные — одну. Дополнительными признаками служат колебания C-N.",
+      "limitations": [
+        "Третичные амины не содержат связей N-H.",
+        "Полосы N-H могут перекрываться с O-H.",
+        "Полосы C-N не являются уникальными для аминов."
+      ]
+    },
+    {
+      "class_name": "Nitriles",
+      "description": "Соединения, содержащие нитрильную группу C≡N.",
+      "bands": [
+        {
+          "bond": "C≡N",
+          "min": 2210,
+          "max": 2260,
+          "vibration": "stretching",
+          "intensity": "weak_to_medium",
+          "shape": "sharp"
+        }
+      ],
+      "interpretation": "Относительно узкая полоса в области тройных связей может свидетельствовать о присутствии нитрильной группы.",
+      "limitations": [
+        "Точная частота и интенсивность зависят от молекулярного окружения.",
+        "Необходимо отличать поглощение C≡N от других полос в области тройных связей."
+      ]
+    },
+    {
+      "class_name": "Aromatics",
+      "description": "Соединения, содержащие ароматические кольца.",
+      "bands": [
+        {
+          "bond": "C-H (aromatic)",
+          "min": 3000,
+          "max": 3100,
+          "vibration": "stretching",
+          "intensity": "weak_to_medium",
+          "shape": "variable"
+        },
+        {
+          "bond": "C=C (aromatic ring)",
+          "min": 1450,
+          "max": 1600,
+          "vibration": "ring stretching",
+          "intensity": "medium",
+          "shape": "multiple"
+        },
+        {
+          "bond": "C-H (aromatic)",
+          "min": 690,
+          "max": 900,
+          "vibration": "out-of-plane bending",
+          "intensity": "variable",
+          "shape": "multiple"
+        }
+      ],
+      "interpretation": "Ароматические структуры оценивают по сочетанию колебаний кольца, ароматических C-H и внеплоскостных деформаций.",
+      "limitations": [
+        "Положение полос зависит от характера и расположения заместителей.",
+        "Отдельные полосы могут перекрываться с колебаниями неароматических групп."
+      ]
+    },
+    {
+      "class_name": "Alkyl halides",
+      "description": "Органические соединения со связью углерод-галоген.",
+      "bands": [
+        {
+          "bond": "C-F",
+          "min": 1000,
+          "max": 1400,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "variable"
+        },
+        {
+          "bond": "C-Cl",
+          "min": 550,
+          "max": 850,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "variable"
+        },
+        {
+          "bond": "C-Br",
+          "min": 500,
+          "max": 750,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "variable"
+        },
+        {
+          "bond": "C-I",
+          "min": 450,
+          "max": 550,
+          "vibration": "stretching",
+          "intensity": "variable",
+          "shape": "variable"
+        }
+      ],
+      "interpretation": "Колебания связей C-X могут поддерживать наличие галогенсодержащих фрагментов. При увеличении массы галогена характерная частота обычно уменьшается.",
+      "limitations": [
+        "Многие полосы расположены в области отпечатков пальцев и могут перекрываться.",
+        "Колебания C-Br и C-I могут находиться у нижней границы диапазона измерения.",
+        "Для C-I указан приблизительный диапазон вокруг 500 см⁻¹, а не универсальное правило."
+      ]
+    },
+    {
+      "class_name": "Esters",
+      "description": "Сложные эфиры карбоновых кислот, содержащие фрагмент R-C(=O)-O-R.",
+      "bands": [
+        {
+          "bond": "C=O",
+          "min": 1715,
+          "max": 1750,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "sharp"
+        },
+        {
+          "bond": "C-O",
+          "min": 1000,
+          "max": 1300,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "multiple"
+        }
+      ],
+      "interpretation": "Для сложных эфиров характерно сочетание интенсивной карбонильной полосы C=O с колебаниями C-O.",
+      "limitations": [
+        "Карбонильные полосы встречаются у нескольких функциональных групп.",
+        "Сопряжение и строение молекулы влияют на положение полосы C=O."
+      ]
+    },
+    {
+      "class_name": "Ketones",
+      "description": "Карбонильные соединения, содержащие группу R-C(=O)-R.",
+      "bands": [
+        {
+          "bond": "C=O",
+          "min": 1680,
+          "max": 1750,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "sharp"
+        }
+      ],
+      "interpretation": "Интенсивная полоса C=O характерна для кетонов. Для насыщенных ациклических кетонов типичное положение находится около 1715 см⁻¹.",
+      "limitations": [
+        "Сопряжение может смещать полосу к меньшим волновым числам.",
+        "Напряжение малых циклов может повышать частоту.",
+        "Полоса C=O не позволяет самостоятельно отличить кетоны от других карбонильных соединений."
+      ]
+    },
+    {
+      "class_name": "Aldehydes",
+      "description": "Карбонильные соединения, содержащие альдегидную группу -CHO.",
+      "bands": [
+        {
+          "bond": "C=O",
+          "min": 1705,
+          "max": 1740,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "sharp"
+        },
+        {
+          "bond": "C-H (aldehyde)",
+          "min": 2700,
+          "max": 2860,
+          "vibration": "stretching",
+          "intensity": "weak",
+          "shape": "doublet"
+        }
+      ],
+      "interpretation": "Альдегиды могут проявлять интенсивную карбонильную полосу и характерную слабую пару полос альдегидной связи C-H приблизительно около 2720 и 2820 см⁻¹.",
+      "limitations": [
+        "Полоса C=O перекрывается с другими карбонильными группами.",
+        "Слабые альдегидные C-H полосы могут быть плохо различимы."
+      ]
+    },
+    {
+      "class_name": "Carboxylic acids",
+      "description": "Карбоновые кислоты, содержащие карбоксильную группу -COOH.",
+      "bands": [
+        {
+          "bond": "C=O",
+          "min": 1680,
+          "max": 1730,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "sharp"
+        },
+        {
+          "bond": "O-H (carboxylic acid)",
+          "min": 2400,
+          "max": 3300,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "very_broad"
+        }
+      ],
+      "interpretation": "Сочетание интенсивной полосы C=O и очень широкой полосы кислотной O-H является характерным признаком карбоновых кислот.",
+      "limitations": [
+        "Положение C=O зависит от ассоциации молекул и условий измерения.",
+        "Широкая кислотная O-H может перекрываться с полосами C-H.",
+        "Наличие O-H не означает автоматически присутствия отдельной спиртовой группы."
+      ]
+    },
+    {
+      "class_name": "Ether",
+      "description": "Простые эфиры, содержащие фрагмент R-O-R.",
+      "bands": [
+        {
+          "bond": "C-O-C",
+          "min": 1000,
+          "max": 1300,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "variable"
+        },
+        {
+          "bond": "C-O-C (aliphatic ether)",
+          "min": 1100,
+          "max": 1150,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "variable"
+        }
+      ],
+      "interpretation": "Сильные колебания C-O могут поддерживать гипотезу о присутствии простого эфира, особенно при отсутствии признаков других кислородсодержащих функциональных групп.",
+      "limitations": [
+        "Поглощение C-O встречается также у спиртов и сложных эфиров.",
+        "ИК-спектр часто не позволяет однозначно идентифицировать простую эфирную группу.",
+        "Отсутствие O-H и C=O само по себе не доказывает наличие простого эфира."
+      ]
+    },
+    {
+      "class_name": "Acyl halides",
+      "description": "Ацилгалогениды, содержащие фрагмент R-C(=O)-X.",
+      "bands": [
+        {
+          "bond": "C=O",
+          "min": 1770,
+          "max": 1815,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "sharp"
+        }
+      ],
+      "interpretation": "Для ацилгалогенидов характерна интенсивная карбонильная полоса, часто расположенная при более высоких волновых числах, чем у обычных кетонов.",
+      "limitations": [
+        "Положение полосы зависит от природы галогена и строения молекулы.",
+        "Сопряжение может снижать частоту колебания C=O.",
+        "Диапазон наиболее характерен для распространённых ацилхлоридов и не является универсальным для всех ацилгалогенидов."
+      ]
+    },
+    {
+      "class_name": "Amides",
+      "description": "Амиды карбоновых кислот, содержащие фрагмент R-C(=O)-N.",
+      "bands": [
+        {
+          "bond": "C=O (amide I)",
+          "min": 1630,
+          "max": 1690,
+          "vibration": "stretching",
+          "intensity": "strong",
+          "shape": "variable"
+        },
+        {
+          "bond": "N-H/C-N (amide II)",
+          "min": 1500,
+          "max": 1560,
+          "vibration": "coupled bending and stretching",
+          "intensity": "medium",
+          "shape": "variable"
+        },
+        {
+          "bond": "N-H",
+          "min": 3200,
+          "max": 3550,
+          "vibration": "stretching",
+          "intensity": "variable",
+          "shape": "variable"
+        }
+      ],
+      "interpretation": "Для амидов характерна полоса амид I, связанная преимущественно с C=O. У первичных и вторичных амидов дополнительные признаки связаны с колебаниями N-H.",
+      "limitations": [
+        "Водородные связи существенно влияют на положение и форму полос.",
+        "Третичные амиды не содержат связи N-H.",
+        "Амид II не следует считать универсально обязательной полосой для всех амидов."
+      ]
+    },
+    {
+      "class_name": "Nitro",
+      "description": "Органические соединения, содержащие нитрогруппу -NO2.",
+      "bands": [
+        {
+          "bond": "NO2",
+          "min": 1500,
+          "max": 1600,
+          "vibration": "asymmetric stretching",
+          "intensity": "strong",
+          "shape": "variable"
+        },
+        {
+          "bond": "NO2",
+          "min": 1300,
+          "max": 1400,
+          "vibration": "symmetric stretching",
+          "intensity": "strong",
+          "shape": "variable"
+        }
+      ],
+      "interpretation": "Присутствие нитрогруппы поддерживается сочетанием двух характерных интенсивных полос симметричного и асимметричного валентных колебаний NO2.",
+      "limitations": [
+        "Положение полос зависит от молекулярного окружения.",
+        "Отдельная полоса не позволяет надёжно подтвердить нитрогруппу.",
+        "Необходимо учитывать перекрытия с другими колебаниями."
+      ]
+    }
+  ]
+}
